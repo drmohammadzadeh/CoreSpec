@@ -134,7 +134,7 @@
   * `If the payment allocation rules configured for a loan product omit mandatory allocation components or introduce duplicates, then the Fineract Loan Engine shall reject the product configuration and return error code "error.msg.payment.allocation.rule.invalid".`
   * `If a loan product enables advanced payment allocation but omits the configuration for the DEFAULT transaction type, then the Fineract Loan Engine shall reject persistence and return error code "error.msg.payment.allocation.default.rule.missing".`
 * **ماتریس ردیابی به سورس‌کد (Traceability Matrix):**
-  * **مسیر فایل و کلاس سورس:** `apache-fineract-src-1.15.0/fineract-progressive-loan/src/main/java/org/apache/fineract/portfolio/loanaccount/domain/transactionprocessor/AdvancedPaymentScheduleTransactionProcessor.java`
+  * **مسیر فایل و کلاس سورس:** `apache-fineract-src-1.15.0/fineract-progressive-loan/src/main/java/org/apache/fineract/portfolio/loanaccount/domain/transactionprocessor/impl/AdvancedPaymentScheduleTransactionProcessor.java`
   * **متد اجرایی:** `#processPaymentAllocationRule(...)` و `AdvancedPaymentAllocationsValidator#validate()`
   * **کدهای خطا و انوتیشن‌ها:** `error.msg.payment.allocation.rule.invalid`, اینام `PaymentAllocationType`, اینام `FutureInstallmentAllocationRule`
   * **پایگاه داده و انتیتی‌ها:** جدول `m_loan_product_payment_allocation_rule` (قید یکتایی `uq_m_loan_product_payment_allocation_rule`), انتیتی `LoanProductPaymentAllocationRule`
@@ -368,7 +368,7 @@
 * **EARS Statement:**
   > When an authorized officer executes a foreclosure command on an active loan, the Fineract Loan Engine shall verify that no undisbursed tranches remain, accelerate all unearned future interest obligations to be waived, compute the exact payoff balance as of the foreclosure date, and upon settlement, archive the schedule and transition the account sub-status to `FORECLOSED`.
 * **شرح نیازمندی و سناریوی بیزنس (فارسی):**
-  تسویه اجباری (Foreclosure) فرآیندی حقوقی و مالی است که طی آن بانک به دلیل نقض تعهدات، توثیق وثایق، یا تقاضای تسویه اضطراری، کلیه اقساط آتی تسهیلات را حال می‌کند. در فاینراکت، با اجرای دستور `forecloseLoan`، ابتدا بررسی می‌شود که هیچ ترانش پرداخت‌نشده‌ای قبل از تاریخ تسویه وجود نداشته باشد. سپس سودهای تحقق‌نیافته پس از تاریخ تسویه ابطال/بخشوده شده و مانده خالص اصل بدهی به همراه سود تعهدی تا روز جاری مطالبه می‌شود. پس از صدور سند، جدول اقساط قبلی در `m_loan_schedule_history` آرشیو شده و پرونده با زیروضعیت `FORECLOSED` قفل می‌گردد.
+  تسویه اجباری (Foreclosure) فرآیندی حقوقی و مالی است که طی آن بانک به دلیل نقض تعهدات، توثیق وثایق، یا تقاضای تسویه اضطراری، کلیه اقساط آتی تسهیلات را حال می‌کند. در فاینراکت، با اجرای دستور `forecloseLoan`، ابتدا بررسی می‌شود که هیچ ترانش پرداخت‌نشده‌ای قبل از تاریخ تسویه وجود نداشته باشد. سپس سودهای تحقق‌نیافته پس از تاریخ تسویه ابطال/بخشوده شده و مانده خالص اصل بدهی به همراه سود تعهدی تا روز جاری مطالبه می‌شود. پس از صدور سند، جدول اقساط قبلی در `m_loan_repayment_schedule_history` آرشیو شده و پرونده با زیروضعیت `FORECLOSED` قفل می‌گردد.
 * **رفتارهای ناخواسته و شروط خطا (EARS If-Then):**
   * `If a loan has undisbursed tranches scheduled prior to or on the foreclosure date, then the Fineract Loan Engine shall abort the operation and return error code "loan.with.undisbursed.tranche.before.foreclosure.cannot.be.foreclosured".`
   * `If an attempt is made to adjust or reopen a foreclosed loan transaction, then the Fineract Loan Engine shall reject the modification and return error code "loan.cannot.be.reopened.as.it.is.foreclosured".`
@@ -376,7 +376,7 @@
   * **مسیر فایل و کلاس سورس:** `apache-fineract-src-1.15.0/fineract-provider/src/main/java/org/apache/fineract/portfolio/loanaccount/service/LoanWritePlatformServiceJpaRepositoryImpl.java`
   * **متد اجرایی:** `#forecloseLoan(Long loanId, JsonCommand command)` و `LoanAccountDomainService#foreCloseLoan(...)`
   * **کدهای خطا و انوتیشن‌ها:** `loan.with.undisbursed.tranche.before.foreclosure.cannot.be.foreclosured`, `loan.cannot.be.reopened.as.it.is.foreclosured`
-  * **پایگاه داده و انتیتی‌ها:** جدول `m_loan` (ستون `loan_sub_status_id`), جدول `m_loan_transaction`, جدول `m_loan_schedule_history`
+  * **پایگاه داده و انتیتی‌ها:** جدول `m_loan` (ستون `loan_sub_status_id`), جدول `m_loan_transaction`, جدول `m_loan_repayment_schedule_history`
 
 ---
 
@@ -508,9 +508,9 @@
 #### REQ-LOAN-RESCHED-002: تصویب استمهال با تمدید مدت، تعدیل نرخ سود و دوره تنفس جدید
 * **الگوی EARS:** Complex
 * **EARS Statement:**
-  > While a loan reschedule request is in pending approval status, when an authorized checker approves the request, the Fineract Loan Reschedule Platform Service shall archive the prior installment schedule into `m_loan_schedule_history`, apply the agreed term variations in `m_loan_term_variations`, generate a restructured repayment schedule starting from the reschedule date, and transition the request status to 200 (`APPROVED`).
+  > While a loan reschedule request is in pending approval status, when an authorized checker approves the request, the Fineract Loan Reschedule Platform Service shall archive the prior installment schedule into `m_loan_repayment_schedule_history`, apply the agreed term variations in `m_loan_term_variations`, generate a restructured repayment schedule starting from the reschedule date, and transition the request status to 200 (`APPROVED`).
 * **شرح نیازمندی و سناریوی بیزنس (فارسی):**
-  با تایید نهایی درخواست استمهال توسط مدیر مجاز (Checker)، تغییرات قرارداد به مرحله اجرا درمی‌آید. فاینراکت ابتدا رونوشتی کامل از جدول اقساط قبلی را در `m_loan_schedule_history` جهت حفظ سوابق حسابرسی ذخیره می‌کند. سپس متغیرهای جدید (شامل تمدید تعداد اقساط، تغییر نرخ سود سالانه، یا اعطای دوره تنفس در اصل/سود) را در جدول `m_loan_term_variations` اعمال کرده و جدول بازپرداخت نوینی از تاریخ استمهال تولید می‌نماید تا مشتری بتواند با اقساط تعدیل‌شده به بازپرداخت ادامه دهد.
+  با تایید نهایی درخواست استمهال توسط مدیر مجاز (Checker)، تغییرات قرارداد به مرحله اجرا درمی‌آید. فاینراکت ابتدا رونوشتی کامل از جدول اقساط قبلی را در `m_loan_repayment_schedule_history` جهت حفظ سوابق حسابرسی ذخیره می‌کند. سپس متغیرهای جدید (شامل تمدید تعداد اقساط، تغییر نرخ سود سالانه، یا اعطای دوره تنفس در اصل/سود) را در جدول `m_loan_term_variations` اعمال کرده و جدول بازپرداخت نوینی از تاریخ استمهال تولید می‌نماید تا مشتری بتواند با اقساط تعدیل‌شده به بازپرداخت ادامه دهد.
 * **رفتارهای ناخواسته و شروط خطا (EARS If-Then):**
   * `If the approved reschedule creates a schedule extending beyond the maximum loan term allowed by the loan product, then the Fineract Loan Reschedule Service shall reject the approval and return error code "error.msg.loan.reschedule.exceeds.max.term".`
   * `If approval is submitted by a user lacking checker authority, then the Fineract Loan Engine shall abort the transaction and return error code "error.msg.authorisation.failed".`
@@ -518,7 +518,7 @@
   * **مسیر فایل و کلاس سورس:** `apache-fineract-src-1.15.0/fineract-provider/src/main/java/org/apache/fineract/portfolio/loanaccount/rescheduleloan/service/LoanRescheduleRequestWritePlatformServiceImpl.java`
   * **متد اجرایی:** `#approve(JsonCommand command)`
   * **کدهای خطا و انوتیشن‌ها:** `@PreAuthorize("hasAuthority('APPROVE_RESCHEDULELOAN')")`, `error.msg.loan.reschedule.exceeds.max.term`
-  * **پایگاه داده و انتیتی‌ها:** جداول `m_loan_reschedule_request` (ستون `status_enum = 200`), `m_loan_schedule_history`, `m_loan_term_variations`, انتیتی `LoanTermVariations`
+  * **پایگاه داده و انتیتی‌ها:** جداول `m_loan_reschedule_request` (ستون `status_enum = 200`), `m_loan_repayment_schedule_history`, `m_loan_term_variations`, انتیتی `LoanTermVariations`
 
 ---
 
@@ -535,10 +535,10 @@
   * `If re-amortization is requested on a standard cumulative loan that is not configured as progressive, then the Fineract Loan Engine shall reject the operation and return error code "error.msg.loan.re-amortization.only.supported.for.progressive.loans".`
   * `If the re-aging parameters define an effective date prior to the most recent loan transaction date, then the Fineract Loan Engine shall reject the command and return error code "error.msg.loan.re-aging.date.invalid".`
 * **ماتریس ردیابی به سورس‌کد (Traceability Matrix):**
-  * **مسیر فایل و کلاس سورس:** `apache-fineract-src-1.15.0/fineract-progressive-loan/src/main/java/org/apache/fineract/portfolio/loanaccount/domain/ProgressiveLoanModelRecalculationService.java`
+  * **مسیر فایل و کلاس سورس:** `apache-fineract-src-1.15.0/fineract-progressive-loan/src/main/java/org/apache/fineract/portfolio/loanaccount/service/ProgressiveLoanModelRecalculationService.java`
   * **متد اجرایی:** `#recalculateProgressiveLoanModel(...)` و `ProgressiveLoanRescheduleRequestDataValidator#validate()`
   * **کدهای خطا و انوتیشن‌ها:** `error.msg.loan.re-amortization.only.supported.for.progressive.loans`, اینام `LoanReAmortizationInterestHandlingType`
-  * **پایگاه داده و انتیتی‌ها:** جداول `m_loan_reaging_parameter`, `m_loan_reamortization_parameter`, انتیتی `LoanReAmortizationParameter`
+  * **پایگاه داده و انتیتی‌ها:** جداول `m_loan_reage_parameter`, `m_loan_reamortization_parameter`, انتیتی `LoanReAmortizationParameter`
 
 ---
 
