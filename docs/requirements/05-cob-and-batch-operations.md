@@ -572,7 +572,7 @@ sequenceDiagram
   * `If waiting for orphaned partitions exceeds the maximum allowable timeout threshold, then the Fineract Stuck Job Recovery Service shall force-terminate remaining partitions before initiating job restart.`
 * **ماتریس ردیابی به سورس‌کد (Traceability Matrix):**
   * **مسیر فایل و کلاس سورس:** `apache-fineract-src-1.15.0/fineract-provider/src/main/java/org/apache/fineract/infrastructure/jobs/service/StuckJobExecutorServiceImpl.java`
-  * **کلاس‌های ارزیابی:** `PartitionedJob.java`, `JobExecutionRepository.java`, `JobOperator.java`
+  * **کلاس‌های ارزیابی:** `PartitionedJob.java`, `JobExecutionRepository.java`, `StuckJobExecutorServiceImpl.java` (using Spring Batch `org.springframework.batch.core.launch.JobOperator`)
   * **متد اجرایی:** `StuckJobExecutorServiceImpl#resumeStuckJob(String jobName)` و `#handleStuckPartitionedJob(...)`
   * **استثناها و انوتیشن‌ها:** `@Service`, `RuntimeException ("Exception while handling a stuck job")`
   * **پایگاه داده و جداول:** جداول `batch_job_execution`, `batch_step_execution`, `job`
