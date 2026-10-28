@@ -9,3 +9,7 @@
 | Tasks 7-11 | Task 12 | `docs/requirements/*` | Clean | Workers write distinct module files; Task 12 audits and indexes |
 
 ## Task Execution Log
+- Task 1: complete (commits df12e29..6c7de40, review clean)
+
+- Task 1: complete (commit 6c7de40, review clean) - Created 6 dedicated file-parsing skills in `.skills/` (Java, Gradle, Config, XML, Doc, DB Schema) with strict EARS syntax and bilingual templates.
+
