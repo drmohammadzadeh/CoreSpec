@@ -13,4 +13,5 @@
 - Task 2: complete (commit 2437b4c, review clean) - Implemented and ran `scripts/crawl_docs.py`, crawled Fineract documentation up to depth 3, generated `sitemap.json`, `SUMMARY.md`, and 64 clean markdown files (~16.89 MB) with 21 modular section files under `docs/crawled/pages/`.
 - Task 3: complete (commits 2437b4c..be17a1a, review clean) - Extracted global system architecture, 46 Gradle subprojects dependency graph, verified tech stack matrix, multi-tenancy routing, and 8 architectural EARS requirements in `docs/architecture/01-system-modules-and-stack.md`.
 - Task 4: complete (commits 7b2a030..f9bd1f3, review clean) - Extracted complete REST API catalog across 6 domains, CQRS command execution pipeline, Maker-Checker/RBAC permissions taxonomy, and 9 architectural EARS requirements in `docs/architecture/02-api-cqrs-and-security.md`.
+- Task 5: complete (commits 04385d9..003d253, review clean) - Extracted domain data model, ERD, 11-status Loan & Savings state machines, Transactional Outbox/Kafka event bus, COB remote partitioning lifecycle, and 10 architectural EARS requirements in `docs/architecture/03-domain-data-events-and-cob.md`.
 
