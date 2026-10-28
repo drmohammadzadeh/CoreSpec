@@ -1,3 +1,21 @@
+# سند واژه‌نامه جامع اصطلاحات بانکی، مدل‌های داده و قواعد معنایی EARS در Apache Fineract 1.15.0
+## (Global Canonical Banking Domain Glossary, Technical Grounding & EARS Syntax Specification)
+
+---
+
+## ۱. مقدمه، متدولوژی ۵ لایه‌ای و چارچوب معنایی EARS (Executive Summary, 5-Layer Methodology & EARS Framework)
+
+این سند به عنوان مرجع رسمی و قطب‌نمای معنایی الزام‌آور (Binding Semantic Compass) برای کلیه تیم‌های مهندسی معکوس و تدوین نیازمندی‌های سیستم (Tasks 7 through 11) در سامانه Apache Fineract 1.15.0 تدوین شده است. این واژه‌نامه شکاف مستندات رسمی فاینراکت را که بخش واژه‌نامه آن (بخش ۱۹ مستندات) در وضعیت "TBD" قرار داشت، به طور کامل پوشش می‌دهد.
+
+### ساختار استاندارد ۵ لایه‌ای اصطلاحات:
+هر اصطلاح در این واژه‌نامه بر مبنای ساختار ۵ بخشی مشخص زیر تحلیل و مستند شده است:
+1. **اصطلاح انگلیسی (English Term):** نام استاندارد بین‌المللی و فنی در متون مالی و سورس‌کد Fineract.
+2. **معادل استاندارد فارسی (Canonical Persian Equivalent):** ترجمه دقیق مطابق استانداردهای بانکداری ایران و بین‌الملل.
+3. **تعریف جامع و منطق بانکی (Domain Definition & Banking Rationale):** تشریح ابعاد مالی، حقوقی و حسابداری مفهوم همراه با فرمول‌های مرتبط.
+4. **تطبیق فنی در فاینراکت (Fineract Technical Grounding):** نگاشت به کلاس‌های دامنه JPA، اینام‌ها و جداول رابطه‌ای دیتابیس.
+5. **قاعده استاندارد EARS (Standard EARS Usage Rule):** گزاره هنجاری رسمی دو زبانه با الزام اکید به کارگیری فعل وجهی `shall` در بند انگلیسی.
+
+---
 
 ## ۲. بخش اول: مدیریت تسهیلات، اعتبارات و پرتفوی وام (Lending & Credit Portfolio Domain)
 
@@ -860,7 +878,7 @@
 * **تعریف جامع و منطق بانکی:** پیکربندی خودکار اتصال رویدادهای سیستمی خاص (نظیر انتقال وجه بین‌بانکی، بازیافت مطالبات سوخت‌شده، واریز نقدی به باجه، تسویه صندوق) به سرفصل‌های معین دفتر کل، به منظور خودکارسازی صدور اسناد بدون دخالت دستی کاربر.
 * **تطبیق فنی در فاینراکت:**
   * **کلاس موجودیت JPA:** `org.apache.fineract.accounting.financialactivityaccount.domain.FinancialActivityAccount`
-  * **جدول دیتابیس:** `acc_financial_activity_account`
+  * **جدول دیتابیس:** `acc_gl_financial_activity_account`
   * **کدهای فعالیت مالی:** `financial_activity_type` (100: Fund Source, 200: Payables, 300: Opening Balances, etc.).
 * **قاعده استاندارد EARS:**
   * **الگوی نحوی:** *Ubiquitous*
@@ -1541,7 +1559,7 @@
 | ۵۱ | Journal Entry | سند دوبل حسابداری | Accounting | `JournalEntry` | `acc_gl_journal_entry` | Ubiquitous |
 | ۵۲ | Debit | بدهکار | Accounting | `JournalEntryType` | `acc_gl_journal_entry.type_enum=1` | Ubiquitous |
 | ۵۳ | Credit | بستانکار | Accounting | `JournalEntryType` | `acc_gl_journal_entry.type_enum=2` | Ubiquitous |
-| ۵۴ | Financial Activity Mapping | نگاشت فعالیت‌های مالی | Accounting | `FinancialActivityAccount` | `acc_financial_activity_account` | Ubiquitous |
+| ۵۴ | Financial Activity Mapping | نگاشت فعالیت‌های مالی | Accounting | `FinancialActivityAccount` | `acc_gl_financial_activity_account` | Ubiquitous |
 | ۵۵ | Suspense Account | حساب واسط معلق | Accounting | `GLAccount` | `acc_gl_account` | State-Driven |
 | ۵۶ | Currency Revaluation | تجدید ارزیابی ارزی | Accounting | `JournalEntry` | `acc_gl_journal_entry` | Event-Driven |
 | ۵۷ | Disbursal Fee | کارمزد پرداخت تسهیلات | Charges | `Charge` / `LoanCharge` | `m_charge` (`time_enum=1`) | Event-Driven |
