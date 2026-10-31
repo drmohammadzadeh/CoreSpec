@@ -1,0 +1,14 @@
+# Excluded per user instruction
+apache-fineract-src-1.15.0/
+ears/
+fineract-docs/
+
+# Python cache & temporary test scripts
+__pycache__/
+*.pyc
+scripts/__pycache__/
+scripts/check_gh_user.py
+
+# Sensitive or temp
+*.token
+*.pat
