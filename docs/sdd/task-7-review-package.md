@@ -10,7 +10,7 @@ index 0000000..92ea934
 --- /dev/null
 +++ b/docs/requirements/01-loan-portfolio.md
 @@ -0,0 +1,553 @@
-+# سند نیازمندی‌های مهندسی معکوس پرتفوی تسهیلات، اعتبارات و چرخه حیات وام در Apache Fineract 1.15.0
++# سند نیازمندی‌های استخراج نیازمندی‌ها با متدولوژی CoreSpec پرتفوی تسهیلات، اعتبارات و چرخه حیات وام در Apache Fineract 1.15.0
 +## (Tier 1: Core Lending, Progressive Loans & Loan Lifecycle Requirements Specification)
 +
 +---

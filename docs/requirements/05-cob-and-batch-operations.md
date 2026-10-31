@@ -1,11 +1,11 @@
-# سند نیازمندی‌های مهندسی معکوس پردازش‌های پایان روز (COB) و جاب‌های دسته‌ای در Apache Fineract 1.15.0
+# سند استخراج نیازمندی‌های پردازش‌های پایان روز (COB) و جاب‌های دسته‌ای در Apache Fineract 1.15.0
 ## (Tier 4: Close of Business - COB & Batch Operations Requirements Specification)
 
 ---
 
 ## ۱. نمای کلی حوزه، معماری دامنه و ناورداهای بنیادین (Executive Summary & Domain Invariants)
 
-این سند مرجع رسمی و مهندسی معکوس‌شده از سورس‌کد **Apache Fineract 1.15.0** جهت پوشش جامع نیازمندی‌های عملکردی و غیرعملکردی زیرسیستم عملیات پایان روز (Close of Business - COB)، مدیریت افراز موازی پردازش‌های دسته‌ای (Spring Batch Partitioning)، کنترل همروندی و قفل‌گذاری بدبینانه، محاسبه تاخیرات و سناریوهای اقساط معوق، شناسایی اقلام تعهدی و استهلاک درآمدها، تغییر تاریخ‌های کاری و تقویم تعطیلات سازمانی، و موتور پایدار پایش و بازیابی جاب‌ها (Batch Job Infrastructure) در قالب استاندارد بین‌المللی **EARS (Easy Approach to Requirements Syntax)** به صورت دوزبانه (فارسی - انگلیسی) است.
+این سند مرجع رسمی و استخراج‌شده از سورس‌کد **Apache Fineract 1.15.0** جهت پوشش جامع نیازمندی‌های عملکردی و غیرعملکردی زیرسیستم عملیات پایان روز (Close of Business - COB)، مدیریت افراز موازی پردازش‌های دسته‌ای (Spring Batch Partitioning)، کنترل همروندی و قفل‌گذاری بدبینانه، محاسبه تاخیرات و سناریوهای اقساط معوق، شناسایی اقلام تعهدی و استهلاک درآمدها، تغییر تاریخ‌های کاری و تقویم تعطیلات سازمانی، و موتور پایدار پایش و بازیابی جاب‌ها (Batch Job Infrastructure) در قالب استاندارد بین‌المللی **EARS (Easy Approach to Requirements Syntax)** به صورت دوزبانه (فارسی - انگلیسی) است.
 
 ### ارکان معماری و ماژول‌های فعال در این حوزه:
 1. **موتور افراز و ارکستراسیون COB (`fineract-cob` / `fineract-provider`):** پیاده‌سازی مبتنی بر Spring Batch و معماری Remote Partitioning شامل `LoanCOBManagerConfiguration` به عنوان گره هماهنگ‌کننده (Manager) و `LoanCOBWorkerConfiguration` به عنوان کارگرهای پردازنده (Workers)، پشتیبانی از چندنخی (Multithreading) از طریق `ThreadPoolTaskExecutor` و ارتباط پیام‌محور از طریق کانال‌های یکپارچه‌سازی Spring Integration (`outboundRequests` / `inboundRequests`).

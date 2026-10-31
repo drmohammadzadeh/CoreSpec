@@ -1,4 +1,4 @@
-# سند نیازمندی‌های مهندسی معکوس پرتفوی تسهیلات، اعتبارات و چرخه حیات وام در Apache Fineract 1.15.0
+# سند استخراج نیازمندی‌های پرتفوی تسهیلات، اعتبارات و چرخه حیات وام در Apache Fineract 1.15.0
 ## (Tier 1: Core Lending, Progressive Loans & Loan Lifecycle Requirements Specification)
 
 ---

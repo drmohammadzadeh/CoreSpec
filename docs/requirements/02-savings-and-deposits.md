@@ -1,4 +1,4 @@
-# سند نیازمندی‌های مهندسی معکوس حساب‌های پس‌انداز، سپرده‌های مدت‌دار و مدیریت وجوه در Apache Fineract 1.15.0
+# سند استخراج نیازمندی‌های حساب‌های پس‌انداز، سپرده‌های مدت‌دار و مدیریت وجوه در Apache Fineract 1.15.0
 ## (Tier 2: Savings Accounts, Fixed & Recurring Deposits, Interest Compounding, Dormancy & Amount Holds Specification)
 
 ---
